@@ -6,18 +6,15 @@ import javax.persistence.*;
 @Table(name = "table_values", schema = "testtask", catalog = "postgres")
 @IdClass(TableValuesPK.class)
 public class TableValues {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_dictionary", nullable = false)
     private Long idDictionary;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_filed", nullable = false)
     private Long idFiled;
     @Basic
     @Column(name = "value", nullable = false, length = -1)
     private String value;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_row", nullable = false)
     private Long idRow;

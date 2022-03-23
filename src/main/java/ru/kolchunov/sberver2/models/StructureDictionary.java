@@ -6,11 +6,9 @@ import javax.persistence.*;
 @Table(name = "structure_dictionary_table", schema = "testtask", catalog = "postgres")
 @IdClass(StructureDictionaryPK.class)
 public class StructureDictionary {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_field", nullable = false)
     private Long idField;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_dictionary", nullable = false)
     private Long idDictionary;
@@ -23,6 +21,7 @@ public class StructureDictionary {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_dictionary", insertable=false, updatable=false)
+    //@JoinColumn(name = "fk_dictionary", referencedColumnName = "id")
     private Dictionary dictionary;
 
     public Dictionary getDictionary() {

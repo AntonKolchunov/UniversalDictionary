@@ -9,12 +9,15 @@ import java.io.Serializable;
 public class StructureDictionaryPK implements Serializable {
     @Column(name = "id_field", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idField;
     @Column(name = "id_dictionary", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDictionary;
+
+    public StructureDictionaryPK(Long idField, Long idDictionary) {
+        this.idField = idField;
+        this.idDictionary = idDictionary;
+    }
 
     public Long getIdField() {
         return idField;

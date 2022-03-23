@@ -3,8 +3,10 @@ package ru.kolchunov.sberver2.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kolchunov.sberver2.models.Dictionary;
 import ru.kolchunov.sberver2.models.StructureDictionary;
 import ru.kolchunov.sberver2.models.StructureDictionaryPK;
+import ru.kolchunov.sberver2.repositories.DictionaryRepository;
 import ru.kolchunov.sberver2.repositories.StructureDictionaryRepository;
 
 import java.util.List;
@@ -15,6 +17,8 @@ public class StructureDictionaryServiceImpl implements StructureDictionaryServic
 
     @Autowired
     StructureDictionaryRepository structureDictionaryRepository;
+    /*@Autowired
+    DictionaryRepository dictionaryRepository;*/
 
     @Override
     public StructureDictionary getById(StructureDictionaryPK structureDictionaryPK) {
@@ -24,6 +28,8 @@ public class StructureDictionaryServiceImpl implements StructureDictionaryServic
 
     @Override
     public void save(StructureDictionary structureDictionary) {
+        /*Dictionary dictionary = dictionaryRepository.getById(structureDictionary.getIdDictionary());
+        structureDictionary.setDictionary(dictionary);*/
         log.info("IN StructureDictionaryServiceImpl save {}", structureDictionary);
         structureDictionaryRepository.save(structureDictionary);
     }

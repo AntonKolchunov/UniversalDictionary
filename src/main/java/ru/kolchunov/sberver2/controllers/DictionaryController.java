@@ -19,7 +19,7 @@ public class DictionaryController {
     @Autowired
     private DictionaryService dictionaryService;
 
-    @RequestMapping(value = {"id"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dictionary> getDictionary(@PathVariable("id") Long dictionaryId){
         if (dictionaryId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

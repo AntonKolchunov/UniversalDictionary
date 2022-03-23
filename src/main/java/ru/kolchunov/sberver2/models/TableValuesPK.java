@@ -9,15 +9,12 @@ import java.io.Serializable;
 public class TableValuesPK implements Serializable {
     @Column(name = "id_dictionary", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDictionary;
     @Column(name = "id_filed", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFiled;
     @Column(name = "id_row", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRow;
 
     public Long getIdDictionary() {

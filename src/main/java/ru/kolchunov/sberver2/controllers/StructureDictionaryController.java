@@ -19,8 +19,9 @@ public class StructureDictionaryController {
     @Autowired
     private StructureDictionaryService structureDictionaryService;
 
-    @RequestMapping(value = {"id"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StructureDictionary> getStructureDictionary(@PathVariable("id") StructureDictionaryPK structuredictionaryId){
+    @RequestMapping(value = {"id_field"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StructureDictionary> getStructureDictionary(@PathVariable("id_dictionary") Long dictionary_id, @PathVariable("id_field") Long field_id){
+        StructureDictionaryPK structuredictionaryId = new StructureDictionaryPK(field_id, dictionary_id);
         if (structuredictionaryId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -55,7 +56,8 @@ public class StructureDictionaryController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StructureDictionary> deleteStructureDictionary(@PathVariable StructureDictionaryPK structuredictionaryId){
+    public ResponseEntity<StructureDictionary> deleteStructureDictionary(@PathVariable("id_dictionary") Long dictionary_id, @PathVariable("id_field") Long field_id){
+        StructureDictionaryPK structuredictionaryId = new StructureDictionaryPK(field_id, dictionary_id);
         StructureDictionary structureDictionary = this.structureDictionaryService.getById(structuredictionaryId);
 
         if (structureDictionary == null){
