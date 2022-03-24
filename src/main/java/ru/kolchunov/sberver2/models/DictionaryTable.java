@@ -1,11 +1,10 @@
 package ru.kolchunov.sberver2.models;
 
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "dictionary_table", schema = "testtask", catalog = "postgres")
-public class Dictionary {
+public class DictionaryTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -35,7 +34,7 @@ public class Dictionary {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Dictionary that = (Dictionary) o;
+        DictionaryTable that = (DictionaryTable) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
