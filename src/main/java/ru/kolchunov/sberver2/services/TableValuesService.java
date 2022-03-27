@@ -1,18 +1,24 @@
 package ru.kolchunov.sberver2.services;
 
-import ru.kolchunov.sberver2.models.TableValues;
-import ru.kolchunov.sberver2.models.TableValuesPK;
+import ru.kolchunov.sberver2.requests.InsertDictReq;
+import ru.kolchunov.sberver2.requests.SearchDictReq;
+import ru.kolchunov.sberver2.responses.SearchDictRes;
 
 import java.util.List;
 
 public interface TableValuesService {
-    TableValues getById(TableValuesPK tableValuesPK);
 
-    void save(TableValues tableValues);
+    void save(InsertDictReq insertDictReq);
 
-    void delete(TableValuesPK tableValuesPK);
+    SearchDictRes searchByFields(SearchDictReq searchDictReq);
 
-    List<TableValues> getAll();
+/*    StructureTableValuesDTO getById(Long id);
 
-   /* List<TableValues> searchByFields(Long id, String ... fields);*/
+    void save(StructureTableValuesDTO structureTableValuesDTO);
+
+    void delete(Long id);
+
+    List<StructureTableValuesDTO> getAll();
+
+    List<StructureTableValuesDTO> searchByFields(ParametrsForSearchDTO parametrsForSearchDTO);*/
 }

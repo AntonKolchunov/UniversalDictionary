@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import ru.kolchunov.sberver2.models.Dictionary;
 
 /**
- * Repository interface for {@link ru.kolchunov.sberver2.models.Dictionary}
+ * Repository interface for {@link Dictionary}
  */
 @Repository
-public interface DictionaryRepository extends JpaRepository<Dictionary,Long> {
+public interface DictionaryRepository extends JpaRepository<Dictionary, Long> {
 }

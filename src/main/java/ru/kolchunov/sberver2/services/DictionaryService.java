@@ -1,15 +1,18 @@
 package ru.kolchunov.sberver2.services;
 
-import ru.kolchunov.sberver2.models.Dictionary;
+import ru.kolchunov.sberver2.requests.CreateDictReq;
 
 import java.util.List;
 
 public interface DictionaryService {
-    Dictionary getById(Long id);
+    //DictionaryStructureDTO getStuctureById(Long id);
 
-    void save(Dictionary dictionary);
+    void saveNewStructure(CreateDictReq createDictReq);
 
-    void delete(Long id);
+    void deleteStructure(Long id);
 
-    List<Dictionary> getAll();
+
+
+    //List<DictionaryStructureDTO> getAllStructure();
+
 }

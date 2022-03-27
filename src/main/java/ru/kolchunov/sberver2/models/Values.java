@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "values_table", schema = "testtask", catalog = "postgres")
-public class ValuesTable {
+public class Values {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -56,7 +56,7 @@ public class ValuesTable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ValuesTable that = (ValuesTable) o;
+        Values that = (Values) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (idRow != null ? !idRow.equals(that.idRow) : that.idRow != null) return false;

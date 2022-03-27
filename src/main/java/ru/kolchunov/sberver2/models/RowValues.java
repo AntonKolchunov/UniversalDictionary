@@ -3,8 +3,8 @@ package ru.kolchunov.sberver2.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "row_table", schema = "testtask", catalog = "postgres")
-public class RowTable {
+@Table(name = "row_values_table", schema = "testtask", catalog = "postgres")
+public class RowValues {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -34,10 +34,10 @@ public class RowTable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RowTable rowTable = (RowTable) o;
+        RowValues rowValues = (RowValues) o;
 
-        if (id != null ? !id.equals(rowTable.id) : rowTable.id != null) return false;
-        if (idDict != null ? !idDict.equals(rowTable.idDict) : rowTable.idDict != null) return false;
+        if (id != null ? !id.equals(rowValues.id) : rowValues.id != null) return false;
+        if (idDict != null ? !idDict.equals(rowValues.idDict) : rowValues.idDict != null) return false;
 
         return true;
     }

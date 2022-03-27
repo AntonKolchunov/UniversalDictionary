@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "dictionary_table", schema = "testtask", catalog = "postgres")
-public class DictionaryTable {
+public class Dictionary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -45,7 +45,7 @@ public class DictionaryTable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DictionaryTable that = (DictionaryTable) o;
+        Dictionary that = (Dictionary) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;

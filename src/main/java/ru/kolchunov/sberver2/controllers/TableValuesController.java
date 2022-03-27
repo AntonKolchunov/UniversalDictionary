@@ -6,10 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kolchunov.sberver2.models.Dictionary;
-import ru.kolchunov.sberver2.models.TableValues;
-import ru.kolchunov.sberver2.models.TableValuesPK;
-import ru.kolchunov.sberver2.services.DictionaryService;
+import ru.kolchunov.sberver2.requests.InsertDictReq;
+import ru.kolchunov.sberver2.requests.SearchDictReq;
+import ru.kolchunov.sberver2.responses.SearchDictRes;
 import ru.kolchunov.sberver2.services.TableValuesService;
 
 import java.util.List;
@@ -20,60 +19,83 @@ public class TableValuesController {
     @Autowired
     private TableValuesService tableValuesService;
 
-    @RequestMapping(value = {"id"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TableValues> getTableValues(@PathVariable("id") TableValuesPK tableValuesId){
-        if (tableValuesId == null){
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InsertDictReq> saveTableValues(@RequestBody InsertDictReq insertDictReq){
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        if (insertDictReq == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        TableValues tableValues = this.tableValuesService.getById(tableValuesId);
-        if (tableValues == null){
+        this.tableValuesService.save(insertDictReq);
+        return new ResponseEntity<>(insertDictReq, httpHeaders, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchDictRes> searchByFields(@RequestBody SearchDictReq searchDictReq){
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        if (searchDictReq == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        SearchDictRes searchDictRes = tableValuesService.searchByFields(searchDictReq);
+       // this.tableValuesService.searchByFields(searchDictReq);
+        return new ResponseEntity<>(searchDictRes, httpHeaders, HttpStatus.CREATED);
+    }
+
+/*    @RequestMapping(value = {"id"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StructureTableValuesDTO> getTableValues(@PathVariable("id") Long id){
+        if (id == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        StructureTableValuesDTO structureTableValuesDTO = this.tableValuesService.getById(id);
+        if (structureTableValuesDTO == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(tableValues, HttpStatus.OK);
+        return new ResponseEntity<>(structureTableValuesDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TableValues> saveTableValues(@RequestBody TableValues tableValues){
+    public ResponseEntity<StructureTableValuesDTO> saveTableValues(@RequestBody StructureTableValuesDTO structureTableValuesDTO){
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        if (tableValues == null){
+        if (structureTableValuesDTO == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.tableValuesService.save(tableValues);
-        return new ResponseEntity<>(tableValues, httpHeaders, HttpStatus.CREATED);
+        this.tableValuesService.save(structureTableValuesDTO);
+        return new ResponseEntity<>(structureTableValuesDTO, httpHeaders, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TableValues> updateTableValues(@RequestBody TableValues tableValues){
+    public ResponseEntity<StructureTableValuesDTO> updateTableValues(@RequestBody StructureTableValuesDTO structureTableValuesDTO){
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        if (tableValues == null){
+        if (structureTableValuesDTO == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.tableValuesService.save(tableValues);
+        this.tableValuesService.save(structureTableValuesDTO);
 
-        return  new ResponseEntity<>(tableValues, httpHeaders, HttpStatus.OK);
+        return  new ResponseEntity<>(structureTableValuesDTO, httpHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TableValues> deleteTableValues(@PathVariable TableValuesPK tableValuesId){
-        TableValues tableValues = this.tableValuesService.getById(tableValuesId);
+    public ResponseEntity<StructureTableValuesDTO> deleteTableValues(@PathVariable("id") Long id){
+        StructureTableValuesDTO structureTableValuesDTO = this.tableValuesService.getById(id);
 
-        if (tableValues == null){
+        if (structureTableValuesDTO == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        this.tableValuesService.delete(tableValuesId);
+        this.tableValuesService.delete(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TableValues>> getAllTableValues(){
-        List<TableValues> tableValuesList = this.tableValuesService.getAll();
+    public ResponseEntity<List<StructureTableValuesDTO>> getAllTableValues(){
+        List<StructureTableValuesDTO> tableValuesList = this.tableValuesService.getAll();
         if(tableValuesList.isEmpty()){
-            return new ResponseEntity<List<TableValues>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<StructureTableValuesDTO>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<TableValues>>(tableValuesList, HttpStatus.OK);
-    }
+        return new ResponseEntity<List<StructureTableValuesDTO>>(tableValuesList, HttpStatus.OK);
+    }*/
 }

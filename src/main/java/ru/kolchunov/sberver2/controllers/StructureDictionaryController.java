@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kolchunov.sberver2.models.StructureDictionary;
-import ru.kolchunov.sberver2.models.StructureDictionaryPK;
-import ru.kolchunov.sberver2.services.StructureDictionaryService;
+import ru.kolchunov.sberver2.services.DictionaryService;
 
 import java.util.List;
 
@@ -17,15 +15,27 @@ import java.util.List;
 @RequestMapping("/api/v1/structuredictionary/")
 public class StructureDictionaryController {
     @Autowired
-    private StructureDictionaryService structureDictionaryService;
+    private DictionaryService dictionaryService;
 
-    @RequestMapping(value = {"id_field"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StructureDictionary> getStructureDictionary(@PathVariable("id_dictionary") Long dictionary_id, @PathVariable("id_field") Long field_id){
-        StructureDictionaryPK structuredictionaryId = new StructureDictionaryPK(field_id, dictionary_id);
-        if (structuredictionaryId == null){
+/*    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DictionaryStructureDTO> deleteStructureDictionary(@PathVariable("id_field") Long id_field){
+        DictionaryStructureDTO structureDictionary = this.dictionaryService.getStuctureById(id_field);
+
+        if (structureDictionary == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        this.dictionaryService.deleteStructure(id_field);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }*/
+
+    /*@RequestMapping(value = {"id_field"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DictionaryStructureDTO> getStructureDictionary(@PathVariable("id_field") Long id_field){
+        if (id_field == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        StructureDictionary structureDictionary = this.structureDictionaryService.getById(structuredictionaryId);
+        DictionaryStructureDTO structureDictionary = this.dictionaryService.getStuctureById(id_field);
         if (structureDictionary == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -33,48 +43,47 @@ public class StructureDictionaryController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StructureDictionary> saveStructureDictionary(@RequestBody StructureDictionary structureDictionary){
+    public ResponseEntity<DictionaryStructureDTO> saveStructureDictionary(@RequestBody DictionaryStructureDTO structureDictionary){
         HttpHeaders httpHeaders = new HttpHeaders();
 
         if (structureDictionary == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.structureDictionaryService.save(structureDictionary);
+        this.dictionaryService.saveStructure(structureDictionary);
         return new ResponseEntity<>(structureDictionary, httpHeaders, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StructureDictionary> updateStructureDictionary(@RequestBody StructureDictionary structureDictionary){
+    public ResponseEntity<DictionaryStructureDTO> updateStructureDictionary(@RequestBody DictionaryStructureDTO structureDictionary){
         HttpHeaders httpHeaders = new HttpHeaders();
 
         if (structureDictionary == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.structureDictionaryService.save(structureDictionary);
+        this.dictionaryService.saveStructure(structureDictionary);
 
         return  new ResponseEntity<>(structureDictionary, httpHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StructureDictionary> deleteStructureDictionary(@PathVariable("id_dictionary") Long dictionary_id, @PathVariable("id_field") Long field_id){
-        StructureDictionaryPK structuredictionaryId = new StructureDictionaryPK(field_id, dictionary_id);
-        StructureDictionary structureDictionary = this.structureDictionaryService.getById(structuredictionaryId);
+    public ResponseEntity<DictionaryStructureDTO> deleteStructureDictionary(@PathVariable("id_field") Long id_field){
+        DictionaryStructureDTO structureDictionary = this.dictionaryService.getStuctureById(id_field);
 
         if (structureDictionary == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        this.structureDictionaryService.delete(structuredictionaryId);
+        this.dictionaryService.deleteStructure(id_field);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<StructureDictionary>> getAllStructureDictionary(){
-        List<StructureDictionary> structureDictionaryList = this.structureDictionaryService.getAll();
+    public ResponseEntity<List<DictionaryStructureDTO>> getAllStructureDictionary(){
+        List<DictionaryStructureDTO> structureDictionaryList = this.dictionaryService.getAllStructure();
         if(structureDictionaryList.isEmpty()){
-            return new ResponseEntity<List<StructureDictionary>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<DictionaryStructureDTO>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<StructureDictionary>>(structureDictionaryList, HttpStatus.OK);
-    }
+        return new ResponseEntity<List<DictionaryStructureDTO>>(structureDictionaryList, HttpStatus.OK);
+    }*/
 }
