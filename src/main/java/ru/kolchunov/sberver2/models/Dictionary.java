@@ -3,21 +3,18 @@ package ru.kolchunov.sberver2.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "structure_dictionary_table", schema = "testtask", catalog = "postgres")
-public class StructureDictionaryTable {
+@Table(name = "dictionary_table", schema = "testtask", catalog = "postgres")
+public class DictionaryTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
     @Basic
-    @Column(name = "id_dictionary", nullable = false)
-    private Long idDictionary;
-    @Basic
     @Column(name = "name", nullable = false, length = -1)
     private String name;
     @Basic
-    @Column(name = "data_type", nullable = false, length = -1)
-    private String dataType;
+    @Column(name = "code", nullable = false)
+    private Long code;
 
     public Long getId() {
         return id;
@@ -25,14 +22,6 @@ public class StructureDictionaryTable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdDictionary() {
-        return idDictionary;
-    }
-
-    public void setIdDictionary(Long idDictionary) {
-        this.idDictionary = idDictionary;
     }
 
     public String getName() {
@@ -43,12 +32,12 @@ public class StructureDictionaryTable {
         this.name = name;
     }
 
-    public String getDataType() {
-        return dataType;
+    public Long getCode() {
+        return code;
     }
 
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     @Override
@@ -56,12 +45,11 @@ public class StructureDictionaryTable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StructureDictionaryTable that = (StructureDictionaryTable) o;
+        DictionaryTable that = (DictionaryTable) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (idDictionary != null ? !idDictionary.equals(that.idDictionary) : that.idDictionary != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (dataType != null ? !dataType.equals(that.dataType) : that.dataType != null) return false;
+        if (code != null ? !code.equals(that.code) : that.code != null) return false;
 
         return true;
     }
@@ -69,9 +57,8 @@ public class StructureDictionaryTable {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (idDictionary != null ? idDictionary.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (dataType != null ? dataType.hashCode() : 0);
+        result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
     }
 }
