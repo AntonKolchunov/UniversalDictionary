@@ -2,16 +2,28 @@ package ru.kolchunov.sberver2.models;
 
 import javax.persistence.*;
 
+/**
+ * Entity for dictionary_table
+ */
 @Entity
 @Table(name = "dictionary_table", schema = "testtask", catalog = "postgres")
 public class Dictionary {
+    /**
+     * Id dictionary
+     */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
+    /**
+     * Name dictionary
+     */
     @Basic
     @Column(name = "name", nullable = false, length = -1)
     private String name;
+    /**
+     * Code of the dictionary in external system
+     */
     @Basic
     @Column(name = "code", nullable = false)
     private Long code;

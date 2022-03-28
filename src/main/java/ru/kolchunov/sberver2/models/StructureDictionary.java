@@ -2,19 +2,34 @@ package ru.kolchunov.sberver2.models;
 
 import javax.persistence.*;
 
+/**
+ * Entity for structure_dictionary_table
+ */
 @Entity
 @Table(name = "structure_dictionary_table", schema = "testtask", catalog = "postgres")
 public class StructureDictionary {
+    /**
+     * Id field
+     */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
+    /**
+     * Id dictionary
+     */
     @Basic
     @Column(name = "id_dictionary", nullable = false)
     private Long idDictionary;
     @Basic
+    /**
+     * Name field
+     */
     @Column(name = "name", nullable = false, length = -1)
     private String name;
+    /**
+     * Type data of the field
+     */
     @Basic
     @Column(name = "data_type", nullable = false, length = -1)
     private DataTypes dataType;

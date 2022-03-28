@@ -1,0 +1,8 @@
+ru.kolchunov.sberver2
+ru.kolchunov.sberver2.controllers
+ru.kolchunov.sberver2.hibernate
+ru.kolchunov.sberver2.models
+ru.kolchunov.sberver2.repositories
+ru.kolchunov.sberver2.requests
+ru.kolchunov.sberver2.responses
+ru.kolchunov.sberver2.services

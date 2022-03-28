@@ -7,18 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kolchunov.sberver2.hibernate.HibernateUtil;
 import ru.kolchunov.sberver2.models.*;
+import ru.kolchunov.sberver2.models.Dictionary;
 import ru.kolchunov.sberver2.repositories.DictionaryRepository;
 import ru.kolchunov.sberver2.repositories.RowValuesRepositiry;
 import ru.kolchunov.sberver2.repositories.ValuesRepository;
-import ru.kolchunov.sberver2.requests.CreateDictReq;
-import ru.kolchunov.sberver2.requests.InsertDictReq;
-import ru.kolchunov.sberver2.requests.SearchDictReq;
+import ru.kolchunov.sberver2.requests.*;
 import ru.kolchunov.sberver2.responses.SearchDictRes;
+import ru.kolchunov.sberver2.responses.UpdateDictValuesSupport;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.swing.text.html.Option;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -31,6 +29,10 @@ public class TableValuesServiceImpl implements TableValuesService{
     @Autowired
     DictionaryRepository dictionaryRepository;
 
+    /**
+     * Insert new values int the Table of values
+     * @param insertDictReq {@link InsertDictReq}
+     */
     @Override
     public void save(InsertDictReq insertDictReq) {
         log.info("IN TableValuesServiceImpl save {}", insertDictReq);
@@ -58,46 +60,54 @@ public class TableValuesServiceImpl implements TableValuesService{
         }
     }
 
-        @Override
-        public SearchDictRes searchByFields(SearchDictReq searchDictReq) {
-            SearchDictRes searchDictRes = new SearchDictRes();
-            Dictionary dictionary = dictionaryRepository.getById(searchDictReq.getIdDict());
+    /**
+     * Search rows by fields
+     * @param searchDictReq {@link SearchDictReq}
+     */
+    @Override
+    public SearchDictRes searchByFields(SearchDictReq searchDictReq) {
+        SearchDictRes searchDictRes = new SearchDictRes();
+        Dictionary dictionary = dictionaryRepository.getById(searchDictReq.getIdDict());
 
-            searchDictRes.setName(dictionary.getName());
-            searchDictRes.setCode(dictionary.getCode());
+        searchDictRes.setName(dictionary.getName());
+        searchDictRes.setCode(dictionary.getCode());
 
-            List<SearchDictReq.Parametrs> parametrsList = searchDictReq.getParametrsList();
+        List<SearchDictReq.Parametrs> parametrsList = searchDictReq.getParametrsList();
 
-            Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
-            Query queryIdFieldToName = session.createQuery("from StructureDictionary where idDictionary = "+searchDictReq.getIdDict());
-            List<StructureDictionary> structureDictionaryList = queryIdFieldToName.list();
-            Map<String, Long> mapIdFieldToName = new HashMap<>();
+        Query queryIdFieldToName = session.createQuery("from StructureDictionary where idDictionary = "+searchDictReq.getIdDict());
+        List<StructureDictionary> structureDictionaryList = queryIdFieldToName.list();
+        Map<String, Long> mapIdFieldToName = new HashMap<>();
 
-            for (int i=0; i<structureDictionaryList.size(); i++){
-                mapIdFieldToName.put(structureDictionaryList.get(i).getName(),structureDictionaryList.get(i).getId());
-            }
+        for (int i=0; i<structureDictionaryList.size(); i++){
+            mapIdFieldToName.put(structureDictionaryList.get(i).getName(),structureDictionaryList.get(i).getId());
+        }
 
-            StringBuffer stringBufferQuery = new StringBuffer("select v.idRow, v.idField, str.name, v.value, str.dataType from RowValues r " +
+        StringBuffer stringBufferQuery = new StringBuffer("select v.idRow, v.idField, str.name, v.value, str.dataType from RowValues r " +
                                                               "inner join Values v on r.idDict = "+ searchDictReq.getIdDict() +" and r.id = v.idRow " +
                                                               "inner join StructureDictionary str on str.id = v.idField");
 
-            for (int i=0; i <parametrsList.size(); i++)
-            {
-                stringBufferQuery.append(" inner join Values v"+i+" on v.idRow = v"+i+".idRow and v"+i+".idField = '"+ mapIdFieldToName.get(parametrsList.get(i).getName())+"'"+
-                                                        " and v"+i+".value "+conditionSearchToString(parametrsList.get(i).getCondition())+" '"+parametrsList.get(i).getValue()+ "'");
-            }
-
-            String selectQuery = stringBufferQuery.toString();
-            Query query = session.createQuery(selectQuery);
-
-            List<SearchDictRes.FieldValue> resultList = query.list();
-            searchDictRes.setFieldValueList(resultList);
-
-            session.close();
-            return searchDictRes;
+        for (int i=0; i <parametrsList.size(); i++)
+        {
+            stringBufferQuery.append(" inner join Values v"+i+" on v.idRow = v"+i+".idRow and v"+i+".idField = '"+ mapIdFieldToName.get(parametrsList.get(i).getName())+"'"+
+                                    " and v"+i+".value "+conditionSearchToString(parametrsList.get(i).getCondition())+" '"+parametrsList.get(i).getValue()+ "'");
         }
 
+        String selectQuery = stringBufferQuery.toString();
+        Query query = session.createQuery(selectQuery);
+
+        List<SearchDictRes.FieldValue> resultList = query.list();
+        searchDictRes.setFieldValueList(resultList);
+
+        session.close();
+        return searchDictRes;
+    }
+
+    /**
+     * Convert enum_condition in condition
+     * @param searchCondition Condition for search {@link SearchCondition}
+     */
     private String conditionSearchToString(SearchCondition searchCondition){
         String result = null;
         switch (searchCondition){
@@ -123,42 +133,40 @@ public class TableValuesServiceImpl implements TableValuesService{
         return result;
     }
 
-/*    @Autowired
-    ValuesRepository valuesRepository;
-    @Autowired
-    StructureTableValuesConverter structureTableValuesConverter;
-
-
+    /**
+     * Delete row by id
+     * @param idRow Id row
+     */
     @Override
-    public StructureTableValuesDTO getById(Long id) {
-        log.info("IN TableValuesServiceImpl getById {}", id);
-        StructureTableValues structureTableValues = valuesRepository.findById(id).orElse(null);
-        return structureTableValuesConverter.convertEntityToDTO(structureTableValues);
+    public void delete(Long idRow) {
+        log.info("IN TableValuesServiceImpl delete {}", idRow);
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query queryIdValues = session.createQuery("select v.id from Values v where v.idRow ="+ idRow);
+        List<Long> listId = queryIdValues.list();
+        listId.stream().forEach(idValue -> valuesRepository.deleteById(idValue));
+        session.close();
+
+        rowValuesRepositiry.deleteById(idRow);
     }
 
-    @Override
-    public void save(StructureTableValuesDTO structureTableValuesDTO) {
-        log.info("IN TableValuesServiceImpl save {}", structureTableValuesDTO);
-        StructureTableValues structureTableValues = structureTableValuesConverter.dtoToEntity(structureTableValuesDTO);
-        valuesRepository.save(structureTableValues);
-    }
+/*    @Override
+    public void updateValues(UpdateDictValuesReq updateDictValuesReq) {
+        log.info("IN TableValuesServiceImpl updateValues {}", updateDictValuesReq);
 
-    @Override
-    public void delete(Long id) {
-        log.info("IN TableValuesServiceImpl delete {}", id);
-        valuesRepository.deleteById(id);
-    }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query queryIdAndName = session.createQuery("select v.id, str.name, v.idField from Values v inner  join StructureDictionary str  " +
+                                                    "on v.idRow = "+ updateDictValuesReq.getIdRow() + " and str.id = v.idField");
+        List<UpdateDictValuesSupport> resultList = queryIdAndName.list();
+        for (UpdateDictValuesSupport updateDictValuesSupport : resultList){
+            Values values = valuesRepository.getById(updateDictValuesSupport.getId());
 
-    @Override
-    public List<StructureTableValuesDTO> getAll() {
-        log.info("IN TableValuesServiceImpl getAll");
-        List<StructureTableValues> dictionaryTableList = valuesRepository.findAll();
-        return structureTableValuesConverter.entityToDTO(dictionaryTableList);
-    }
 
-    @Override
-    public List<StructureTableValuesDTO> searchByFields(ParametrsForSearchDTO parametrsForSearchDTO) {
+        }
 
-        return null;
+        session.close();
+
+
     }*/
+
 }

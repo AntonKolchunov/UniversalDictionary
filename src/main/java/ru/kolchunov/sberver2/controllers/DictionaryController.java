@@ -17,6 +17,17 @@ public class DictionaryController {
     @Autowired
     private DictionaryService dictionaryService;
 
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CreateDictReq> saveDictionary(@RequestBody CreateDictReq createDictReq){
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        if (createDictReq == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        this.dictionaryService.saveNewStructure(createDictReq);
+        return new ResponseEntity<>(createDictReq, httpHeaders, HttpStatus.CREATED);
+    }
+
 /*    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DictionaryDTO> getDictionary(@PathVariable("id") Long dictionaryId){
         if (dictionaryId == null){
@@ -29,16 +40,6 @@ public class DictionaryController {
         return new ResponseEntity<>(dictionary, HttpStatus.OK);
     }*/
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateDictReq> saveDictionary(@RequestBody CreateDictReq createDictReq){
-        HttpHeaders httpHeaders = new HttpHeaders();
-
-        if (createDictReq == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        this.dictionaryService.saveNewStructure(createDictReq);
-        return new ResponseEntity<>(createDictReq, httpHeaders, HttpStatus.CREATED);
-    }
 
     /*@RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DictionaryDTO> updateDictionary(@RequestBody DictionaryDTO dictionary){

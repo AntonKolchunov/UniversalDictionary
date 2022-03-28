@@ -2,16 +2,22 @@ package ru.kolchunov.sberver2.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 
-// спец. Java класс для инициализации Hibernate
+/**
+ * Special Java class for Hibernate initialization
+ */
 public class HibernateUtil {
 
-    // фабрика для создания сесиий
+    /**
+     * Session creation factory
+     */
     private static final SessionFactory sessionFactory = initSessionFactory();
 
+    /**
+     * Session initialization
+     */
     // этот метод вызывается автоматически, т.к. он вызывается из статичной переменной
     private static SessionFactory initSessionFactory() {
         try {
@@ -23,7 +29,9 @@ public class HibernateUtil {
         }
     }
 
-    // этот метод будем вызывать, когда потрбуется SessionFactory
+    /**
+     * Get session factory
+     */
     public static SessionFactory getSessionFactory() {
 
         if (sessionFactory == null){
@@ -33,7 +41,9 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
-    // закрыть все соединения с помощью SessionFactory
+    /**
+     * Close all connections
+     */
     public static void close() {
         getSessionFactory().close();
     }

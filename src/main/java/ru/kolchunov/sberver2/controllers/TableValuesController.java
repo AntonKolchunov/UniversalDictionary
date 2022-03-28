@@ -38,7 +38,6 @@ public class TableValuesController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         SearchDictRes searchDictRes = tableValuesService.searchByFields(searchDictReq);
-       // this.tableValuesService.searchByFields(searchDictReq);
         return new ResponseEntity<>(searchDictRes, httpHeaders, HttpStatus.CREATED);
     }
 

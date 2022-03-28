@@ -2,23 +2,33 @@ package ru.kolchunov.sberver2.services;
 
 import ru.kolchunov.sberver2.requests.InsertDictReq;
 import ru.kolchunov.sberver2.requests.SearchDictReq;
+import ru.kolchunov.sberver2.requests.UpdateDictValuesReq;
 import ru.kolchunov.sberver2.responses.SearchDictRes;
 
-import java.util.List;
-
+/**
+ * Service for values functionality
+ */
 public interface TableValuesService {
 
+    /**
+     * Insert new values int the Table of values
+     * @param insertDictReq {@link InsertDictReq}
+     */
     void save(InsertDictReq insertDictReq);
 
+    /**
+     * Search rows by fields
+     * @param searchDictReq {@link SearchDictReq}
+     */
     SearchDictRes searchByFields(SearchDictReq searchDictReq);
 
-/*    StructureTableValuesDTO getById(Long id);
-
-    void save(StructureTableValuesDTO structureTableValuesDTO);
-
+    /**
+     * Delete row by id
+     * @param id Id row
+     */
     void delete(Long id);
 
-    List<StructureTableValuesDTO> getAll();
 
-    List<StructureTableValuesDTO> searchByFields(ParametrsForSearchDTO parametrsForSearchDTO);*/
+/*    void updateValues(UpdateDictValuesReq updateDictValuesReq);*/
+
 }

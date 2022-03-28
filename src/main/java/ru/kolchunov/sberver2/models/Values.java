@@ -2,19 +2,34 @@ package ru.kolchunov.sberver2.models;
 
 import javax.persistence.*;
 
+/**
+ * Entity for values_table
+ */
 @Entity
 @Table(name = "values_table", schema = "testtask", catalog = "postgres")
 public class Values {
+    /**
+     * Id value
+     */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
+    /**
+     * Id row
+     */
     @Basic
     @Column(name = "id_row", nullable = false)
     private Long idRow;
+    /**
+     * Id field
+     */
     @Basic
     @Column(name = "id_field", nullable = false)
     private Long idField;
+    /**
+     * Value
+     */
     @Basic
     @Column(name = "value", nullable = false, length = -1)
     private String value;
