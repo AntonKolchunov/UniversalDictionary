@@ -2,13 +2,14 @@ package ru.kolchunov.sberver2.responses;
 
 import lombok.Data;
 import ru.kolchunov.sberver2.models.DataTypes;
+
 import java.util.List;
 
 /**
  * DTO for response in the searching values by fields method
  */
 @Data
-public class SearchDictRes{
+public class SearchDictResponse {
     /**
      * Code of the dictionary in external system
      */
@@ -20,10 +21,10 @@ public class SearchDictRes{
     /**
      * Detailing information by fields
      */
-    private List<FieldValue> fieldValueList;
+    private List<FieldValue> fieldsValue;
 
     @Data
-    public static class FieldValue{
+    public static class FieldValue {
         /**
          * Id row
          */
@@ -44,5 +45,14 @@ public class SearchDictRes{
          * Data type of the field
          */
         private DataTypes dataTypes;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchDictResponse{" +
+                "code=" + code +
+                ", name='" + name + '\'' +
+                ", fieldsValue=" + fieldsValue +
+                '}';
     }
 }

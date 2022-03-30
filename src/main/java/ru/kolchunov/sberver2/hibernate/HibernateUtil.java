@@ -5,19 +5,12 @@ import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 
-/**
- * Special Java class for Hibernate initialization
- */
+// спец. Java класс для инициализации Hibernate
 public class HibernateUtil {
 
-    /**
-     * Session creation factory
-     */
+    // фабрика для создания сесиий
     private static final SessionFactory sessionFactory = initSessionFactory();
 
-    /**
-     * Session initialization
-     */
     // этот метод вызывается автоматически, т.к. он вызывается из статичной переменной
     private static SessionFactory initSessionFactory() {
         try {
@@ -29,9 +22,7 @@ public class HibernateUtil {
         }
     }
 
-    /**
-     * Get session factory
-     */
+    // этот метод будем вызывать, когда потрбуется SessionFactory
     public static SessionFactory getSessionFactory() {
 
         if (sessionFactory == null){
@@ -41,9 +32,7 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
-    /**
-     * Close all connections
-     */
+    // закрыть все соединения с помощью SessionFactory
     public static void close() {
         getSessionFactory().close();
     }

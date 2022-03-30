@@ -1,6 +1,8 @@
 package ru.kolchunov.sberver2.requests;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.kolchunov.sberver2.models.SearchCondition;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * DTO for searching by fields in the dictionary
  */
 @Data
-public class SearchDictReq {
+public class SearchDictRequest {
     /**
      * Id dictionary
      */
@@ -17,10 +19,12 @@ public class SearchDictReq {
     /**
      * List ot the paramets for searching
      */
-    private List<Parametrs> parametrsList;
+    private List<SearchTerm> searchTerms;
 
     @Data
-    public static class Parametrs{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SearchTerm {
         /**
          * Name of the field
          */

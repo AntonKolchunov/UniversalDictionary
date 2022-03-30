@@ -9,7 +9,7 @@ import java.util.List;
  * DTO for updating structure of the  dictionary
  */
 @Data
-public class UpdateDictReq {
+public class UpdateDictRequest {
     /**
      * Id dictionary
      */
@@ -25,10 +25,10 @@ public class UpdateDictReq {
     /**
      * Structure of the dictionary
      */
-    private List<FieldStructure> fieldStructureList;
+    private List<FieldStructure> fieldsStructure;
 
     @Data
-    public static class FieldStructure{
+    public static class FieldStructure {
         /**
          * Id field
          */

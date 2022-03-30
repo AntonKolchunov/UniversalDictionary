@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kolchunov.sberver2.requests.CreateDictReq;
+import ru.kolchunov.sberver2.requests.CreateDictRequest;
 import ru.kolchunov.sberver2.services.DictionaryService;
 
 import java.util.List;
@@ -18,14 +18,14 @@ public class DictionaryController {
     private DictionaryService dictionaryService;
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateDictReq> saveDictionary(@RequestBody CreateDictReq createDictReq){
+    public ResponseEntity<CreateDictRequest> saveDictionary(@RequestBody CreateDictRequest createDictRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        if (createDictReq == null){
+        if (createDictRequest == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.dictionaryService.saveNewStructure(createDictReq);
-        return new ResponseEntity<>(createDictReq, httpHeaders, HttpStatus.CREATED);
+        this.dictionaryService.saveNewStructure(createDictRequest);
+        return new ResponseEntity<>(createDictRequest, httpHeaders, HttpStatus.CREATED);
     }
 
 /*    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

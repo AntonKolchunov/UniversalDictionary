@@ -1,6 +1,8 @@
 package ru.kolchunov.sberver2.requests;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.kolchunov.sberver2.models.DataTypes;
 
 
@@ -10,7 +12,7 @@ import java.util.List;
  * DTO for creating new Dictionary and his structure
  */
 @Data
-public class CreateDictReq {
+public class CreateDictRequest {
     /**
      * Code of the dictionary in external system
      */
@@ -22,10 +24,12 @@ public class CreateDictReq {
     /**
      * Structure of the dictionary
      */
-    private List<FieldStructure> fieldStructureList;
+    private List<FieldStructure> fieldsStructure;
 
     @Data
-    public static class FieldStructure{
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FieldStructure {
         /**
          * Name of the field
          */

@@ -8,7 +8,7 @@ import java.util.List;
  * DTO for updating row of the values of the dictionary
  */
 @Data
-public class UpdateDictValuesReq {
+public class UpdateDictValuesRequest {
     /**
      * Id row of the values
      */
@@ -16,10 +16,10 @@ public class UpdateDictValuesReq {
     /**
      * List values for updating
      */
-    private List<FieldValue> fieldValueList;
+    private List<FieldValue> fieldsValue;
 
     @Data
-    public static class FieldValue{
+    public static class FieldValue {
         /**
          * Name field
          */

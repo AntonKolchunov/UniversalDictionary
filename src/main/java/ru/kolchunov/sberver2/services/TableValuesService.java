@@ -1,9 +1,8 @@
 package ru.kolchunov.sberver2.services;
 
-import ru.kolchunov.sberver2.requests.InsertDictReq;
-import ru.kolchunov.sberver2.requests.SearchDictReq;
-import ru.kolchunov.sberver2.requests.UpdateDictValuesReq;
-import ru.kolchunov.sberver2.responses.SearchDictRes;
+import ru.kolchunov.sberver2.requests.InsertDictRequest;
+import ru.kolchunov.sberver2.requests.SearchDictRequest;
+import ru.kolchunov.sberver2.responses.SearchDictResponse;
 
 /**
  * Service for values functionality
@@ -12,23 +11,26 @@ public interface TableValuesService {
 
     /**
      * Insert new values int the Table of values
-     * @param insertDictReq {@link InsertDictReq}
+     *
+     * @param insertDictRequest {@link InsertDictRequest}
      */
-    void save(InsertDictReq insertDictReq);
+    void save(InsertDictRequest insertDictRequest);
 
     /**
      * Search rows by fields
-     * @param searchDictReq {@link SearchDictReq}
+     *
+     * @param searchDictRequest {@link SearchDictRequest}
      */
-    SearchDictRes searchByFields(SearchDictReq searchDictReq);
+    SearchDictResponse searchByFields(SearchDictRequest searchDictRequest);
 
     /**
      * Delete row by id
+     *
      * @param id Id row
      */
     void delete(Long id);
 
 
-/*    void updateValues(UpdateDictValuesReq updateDictValuesReq);*/
+    /*    void updateValues(UpdateDictValuesReq updateDictValuesReq);*/
 
 }

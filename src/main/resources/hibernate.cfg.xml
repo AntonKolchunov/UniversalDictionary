@@ -10,15 +10,15 @@
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">rootroot</property>
+    <property name="current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</property>
 
       <mapping class="ru.kolchunov.sberver2.models.Dictionary"/>
-    <mapping class="ru.kolchunov.sberver2.models.StructureDictionary"/>
+      <mapping class="ru.kolchunov.sberver2.models.StructureDictionary"/>
       <mapping class="ru.kolchunov.sberver2.models.Dictionary"/>
       <mapping class="ru.kolchunov.sberver2.models.StructureDictionary"/>
       <mapping class="ru.kolchunov.sberver2.models.RowValues"/>
       <mapping class="ru.kolchunov.sberver2.models.StructureDictionary"/>
       <mapping class="ru.kolchunov.sberver2.models.Values"/>
-
 
       <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->

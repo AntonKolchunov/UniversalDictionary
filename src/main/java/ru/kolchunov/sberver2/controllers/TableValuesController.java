@@ -6,12 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kolchunov.sberver2.requests.InsertDictReq;
-import ru.kolchunov.sberver2.requests.SearchDictReq;
-import ru.kolchunov.sberver2.responses.SearchDictRes;
+import ru.kolchunov.sberver2.requests.InsertDictRequest;
+import ru.kolchunov.sberver2.requests.SearchDictRequest;
+import ru.kolchunov.sberver2.responses.SearchDictResponse;
 import ru.kolchunov.sberver2.services.TableValuesService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tablevalues/")
@@ -20,24 +18,24 @@ public class TableValuesController {
     private TableValuesService tableValuesService;
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InsertDictReq> saveTableValues(@RequestBody InsertDictReq insertDictReq){
+    public ResponseEntity<InsertDictRequest> saveTableValues(@RequestBody InsertDictRequest insertDictRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        if (insertDictReq == null){
+        if (insertDictRequest == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.tableValuesService.save(insertDictReq);
-        return new ResponseEntity<>(insertDictReq, httpHeaders, HttpStatus.CREATED);
+        this.tableValuesService.save(insertDictRequest);
+        return new ResponseEntity<>(insertDictRequest, httpHeaders, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SearchDictRes> searchByFields(@RequestBody SearchDictReq searchDictReq){
+    public ResponseEntity<SearchDictResponse> searchByFields(@RequestBody SearchDictRequest searchDictRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        if (searchDictReq == null){
+        if (searchDictRequest == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        SearchDictRes searchDictRes = tableValuesService.searchByFields(searchDictReq);
+        SearchDictResponse searchDictRes = tableValuesService.searchByFields(searchDictRequest);
         return new ResponseEntity<>(searchDictRes, httpHeaders, HttpStatus.CREATED);
     }
 
