@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kolchunov.sberver2.SberVer2Application;
 import ru.kolchunov.sberver2.hibernate.HibernateUtil;
-import ru.kolchunov.sberver2.hibernate.SessionFactoryConfig;
 import ru.kolchunov.sberver2.models.Dictionary;
 import ru.kolchunov.sberver2.models.StructureDictionary;
 import ru.kolchunov.sberver2.repositories.DictionaryRepository;

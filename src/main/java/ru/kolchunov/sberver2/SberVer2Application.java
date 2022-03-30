@@ -23,17 +23,18 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@SpringBootApplication(exclude = { //
+/*@SpringBootApplication(exclude = { //
         DataSourceAutoConfiguration.class, //
         DataSourceTransactionManagerAutoConfiguration.class, //
         HibernateJpaAutoConfiguration.class },
-        scanBasePackages = "ru.kolchunov.sberver2")
+        scanBasePackages = "ru.kolchunov.sberver2")*/
+
+@SpringBootApplication
     public class SberVer2Application {
 
     public static void main(String[] args) {
         SpringApplication.run(SberVer2Application.class, args);
     }
-
     @Autowired
     private Environment env;
 
@@ -64,7 +65,7 @@ import java.util.Properties;
         // properties.put("hibernate.temp.use_jdbc_metadata_defaults",false);
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         // Package contain entity classes
-        factoryBean.setPackagesToScan(new String[] { "\"src\\\\main\\\\ru\\\\kolchunov\\\\sberver2 \"" });
+        factoryBean.setPackagesToScan(new String[] { "ru.kolchunov.sberver2" });
         factoryBean.setDataSource(dataSource);
         factoryBean.setHibernateProperties(properties);
         factoryBean.afterPropertiesSet();
@@ -80,4 +81,5 @@ import java.util.Properties;
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
         return transactionManager;
     }
+
 }

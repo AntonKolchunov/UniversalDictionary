@@ -1,3 +1,4 @@
+/*
 package ru.kolchunov.sberver2.hibernate;
 
 import org.hibernate.Session;
@@ -15,3 +16,4 @@ public class SessionFactoryConfig {
         return session;
     }
 }
+*/

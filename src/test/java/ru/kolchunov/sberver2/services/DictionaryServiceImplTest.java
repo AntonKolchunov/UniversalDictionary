@@ -24,7 +24,7 @@ class DictionaryServiceImplTest {
     @Test
     void saveNewStructure() {
         CreateDictRequest createDictRequest = new CreateDictRequest();
-        createDictRequest.setCode(1234L);
+        createDictRequest.setCode(12345L);
         createDictRequest.setName("dictionary_from_unit_test");
         List<CreateDictRequest.FieldStructure> fieldsStructure = new ArrayList<>();
         fieldsStructure.add(new CreateDictRequest.FieldStructure("first_long_field", DataTypes.LONG));

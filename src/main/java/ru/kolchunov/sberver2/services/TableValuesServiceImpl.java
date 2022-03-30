@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kolchunov.sberver2.hibernate.HibernateUtil;
-import ru.kolchunov.sberver2.hibernate.SessionFactoryConfig;
 import ru.kolchunov.sberver2.models.*;
 import ru.kolchunov.sberver2.models.Dictionary;
 import ru.kolchunov.sberver2.repositories.DictionaryRepository;
@@ -46,7 +45,6 @@ public class TableValuesServiceImpl implements TableValuesService {
         log.info("IN TableValuesServiceImpl save {}", insertDictRequest);
         //Session session = SessionFactoryConfig.getCurrentSessionFromConfig();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.getTransaction().begin();
 
         RowValues rowValues = new RowValues();
         rowValues.setIdDict(insertDictRequest.getIdDict());
@@ -65,7 +63,6 @@ public class TableValuesServiceImpl implements TableValuesService {
             values.setIdRow(rowValues.getId());
             valuesRepository.save(values);
         }
-        session.getTransaction().commit();
     }
 
     /**
