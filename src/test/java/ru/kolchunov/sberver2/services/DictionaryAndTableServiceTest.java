@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.kolchunov.sberver2.models.DataTypes;
+import ru.kolchunov.sberver2.models.SearchCondition;
 import ru.kolchunov.sberver2.requests.CreateDictRequest;
 import ru.kolchunov.sberver2.requests.InsertDictRequest;
+import ru.kolchunov.sberver2.requests.SearchDictRequest;
 import ru.kolchunov.sberver2.responses.DictionaryModel;
 import ru.kolchunov.sberver2.responses.FieldValue;
 
@@ -55,5 +57,28 @@ class DictionaryAndTableServiceTest {
 
         Assertions.assertNotNull(values);
         Assertions.assertEquals(4, values.size());
+
+        insertDictRequest = new InsertDictRequest();
+        insertDictRequest.setIdDict(dictionary.getId());
+        fieldsValue = new ArrayList<>();
+        fieldsValue.add(new InsertDictRequest.FieldValue("first_long_field", "100002L"));
+        fieldsValue.add(new InsertDictRequest.FieldValue("second_boolean_field", "false"));
+        fieldsValue.add(new InsertDictRequest.FieldValue("third_string_field", "string_1"));
+        fieldsValue.add(new InsertDictRequest.FieldValue("fourth_date_field", "2022.04.03"));
+        insertDictRequest.setFieldsValue(fieldsValue);
+
+        values = tableValuesService.insert(insertDictRequest);
+
+        Assertions.assertNotNull(values);
+        Assertions.assertEquals(4, values.size());
+
+        SearchDictRequest searchDictRequest = new SearchDictRequest();
+        searchDictRequest.setIdDict(dictionary.getId());
+        List<SearchDictRequest.SearchTerm> searchTerms = new ArrayList<>();
+        searchTerms.add(new SearchDictRequest.SearchTerm("first_long_field", "100001L", SearchCondition.GREATER_OR_EQUAL));
+        searchTerms.add(new SearchDictRequest.SearchTerm("third_string_field", "string_1", SearchCondition.EQUAL));
+        searchDictRequest.setSearchTerms(searchTerms);
+
+        System.out.println(tableValuesService.search(searchDictRequest));
     }
 }
