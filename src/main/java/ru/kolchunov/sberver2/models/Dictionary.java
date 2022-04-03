@@ -19,14 +19,14 @@ public class Dictionary {
      * Name dictionary
      */
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
     /**
      * Code of the dictionary in external system
      */
     @Basic
-    @Column(name = "code", nullable = false)
-    private Long code;
+    @Column(name = "code", nullable = false, length = 50)
+    private String code;
 
     public Long getId() {
         return id;
@@ -44,11 +44,11 @@ public class Dictionary {
         this.name = name;
     }
 
-    public Long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

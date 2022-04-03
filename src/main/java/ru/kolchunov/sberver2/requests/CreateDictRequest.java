@@ -16,7 +16,7 @@ public class CreateDictRequest {
     /**
      * Code of the dictionary in external system
      */
-    private Long code;
+    private String code;
     /**
      * Name of the dictionary
      */

@@ -2,7 +2,9 @@ package ru.kolchunov.sberver2.services;
 
 import ru.kolchunov.sberver2.requests.InsertDictRequest;
 import ru.kolchunov.sberver2.requests.SearchDictRequest;
-import ru.kolchunov.sberver2.responses.SearchDictResponse;
+import ru.kolchunov.sberver2.responses.FieldValue;
+
+import java.util.List;
 
 /**
  * Service for values functionality
@@ -14,14 +16,14 @@ public interface TableValuesService {
      *
      * @param insertDictRequest {@link InsertDictRequest}
      */
-    void save(InsertDictRequest insertDictRequest);
+    List<FieldValue> insert(InsertDictRequest insertDictRequest);
 
     /**
      * Search rows by fields
      *
      * @param searchDictRequest {@link SearchDictRequest}
      */
-    SearchDictResponse searchByFields(SearchDictRequest searchDictRequest);
+    List<FieldValue> search(SearchDictRequest searchDictRequest);
 
     /**
      * Delete row by id
@@ -29,8 +31,4 @@ public interface TableValuesService {
      * @param id Id row
      */
     void delete(Long id);
-
-
-    /*    void updateValues(UpdateDictValuesReq updateDictValuesReq);*/
-
 }

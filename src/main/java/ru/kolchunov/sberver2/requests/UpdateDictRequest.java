@@ -17,7 +17,7 @@ public class UpdateDictRequest {
     /**
      * Code of the dictionary in external system
      */
-    private Long code;
+    private String code;
     /**
      * Name of the dictionary
      */

@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kolchunov.sberver2.exceptions.BadRequestException;
 import ru.kolchunov.sberver2.requests.CreateDictRequest;
+import ru.kolchunov.sberver2.responses.DictionaryModel;
 import ru.kolchunov.sberver2.services.DictionaryService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/dictionary/")
@@ -17,61 +17,22 @@ public class DictionaryController {
     @Autowired
     private DictionaryService dictionaryService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateDictRequest> saveDictionary(@RequestBody CreateDictRequest createDictRequest) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-
+    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DictionaryModel> create(@RequestBody CreateDictRequest createDictRequest) {
         if (createDictRequest == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Empty request received");
         }
-        this.dictionaryService.saveNewStructure(createDictRequest);
-        return new ResponseEntity<>(createDictRequest, httpHeaders, HttpStatus.CREATED);
+
+        return new ResponseEntity<>(this.dictionaryService.create(createDictRequest),
+                new HttpHeaders(), HttpStatus.CREATED);
     }
 
-/*    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DictionaryDTO> getDictionary(@PathVariable("id") Long dictionaryId){
-        if (dictionaryId == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DictionaryModel> find(@PathVariable Long id) {
+        if (id == null) {
+            throw new BadRequestException("Empty id received");
         }
-        DictionaryDTO dictionary = this.dictionaryService.getDictionaryById(dictionaryId);
-        if (dictionary == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(dictionary, HttpStatus.OK);
-    }*/
 
-
-    /*@RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DictionaryDTO> updateDictionary(@RequestBody DictionaryDTO dictionary){
-        HttpHeaders httpHeaders = new HttpHeaders();
-
-        if (dictionary == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        this.dictionaryService.saveDictionary(dictionary);
-
-        return  new ResponseEntity<>(dictionary, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(this.dictionaryService.find(id), new HttpHeaders(), HttpStatus.OK);
     }
-
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DictionaryDTO> deleteDictionary(@PathVariable Long id){
-        DictionaryDTO dictionary = this.dictionaryService.getDictionaryById(id);
-
-        if (dictionary == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        this.dictionaryService.deleteDictionary(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<DictionaryDTO>> getAllDictionary(){
-        List<DictionaryDTO> dictionaryList = this.dictionaryService.getAllDictionary();
-        if(dictionaryList.isEmpty()){
-            return new ResponseEntity<List<DictionaryDTO>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<DictionaryDTO>>(dictionaryList, HttpStatus.OK);
-    }*/
 }

@@ -1,39 +1,28 @@
 package ru.kolchunov.sberver2.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kolchunov.sberver2.SberVer2Application;
-import ru.kolchunov.sberver2.hibernate.HibernateUtil;
+import ru.kolchunov.sberver2.exceptions.NotFoundException;
 import ru.kolchunov.sberver2.models.Dictionary;
 import ru.kolchunov.sberver2.models.StructureDictionary;
 import ru.kolchunov.sberver2.repositories.DictionaryRepository;
 import ru.kolchunov.sberver2.repositories.StructureDictionaryRepository;
-import ru.kolchunov.sberver2.repositories.ValuesRepository;
 import ru.kolchunov.sberver2.requests.CreateDictRequest;
-import ru.kolchunov.sberver2.requests.UpdateDictRequest;
+import ru.kolchunov.sberver2.responses.DictionaryModel;
+import ru.kolchunov.sberver2.responses.FieldModel;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
 
 
 @Slf4j
-@EnableTransactionManagement
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
+    @Autowired
+    private DictionaryRepository dictionaryRepository;
 
     @Autowired
-    DictionaryRepository dictionaryRepository;
-    @Autowired
-    StructureDictionaryRepository structureDictionaryRepository;
-    @Autowired
-    ValuesRepository valuesRepository;
+    private StructureDictionaryRepository structureDictionaryRepository;
 
     /**
      * Create new dictionary and his structure
@@ -42,8 +31,8 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Transactional
-    public void saveNewStructure(CreateDictRequest createDictRequest) {
-        log.info("IN DictionaryServiceImpl saveNewStructure {}", createDictRequest);
+    public DictionaryModel create(CreateDictRequest createDictRequest) {
+        log.info("CREATE DICTIONARY {}", createDictRequest);
 
         Dictionary dictionary = new Dictionary();
         dictionary.setName(createDictRequest.getName());
@@ -58,6 +47,7 @@ public class DictionaryServiceImpl implements DictionaryService {
             structureDictionaryRepository.save(structureDictionary);
         }
 
+        return find(dictionary.getId());
     }
 
     /**
@@ -67,37 +57,11 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Transactional
-    public void deleteAllStructure(Long idDictionary) {
-        log.info("IN DictionaryServiceImpl deleteAllStructure {}", idDictionary);
+    public void delete(Long idDictionary) {
+        log.info("DELETE DICTIONARY BY ID {}", idDictionary);
 
-        //Session session = SessionFactoryConfig.getCurrentSessionFromConfig();
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Query query = session.createQuery("select str.id from StructureDictionary str where idDictionary = " + idDictionary);
-        List<Long> IdFields = query.list();
-
-        IdFields.stream()
-                    .forEach(x -> structureDictionaryRepository.deleteById(x));
+        structureDictionaryRepository.deleteAllByIdDictionary(idDictionary);
         dictionaryRepository.deleteById(idDictionary);
-    }
-
-    /**
-     * Delete structure by id of the field
-     *
-     * @param idField Id field
-     */
-    @Override
-    @Transactional
-    public void deleteFieldStructure(Long idField) {
-        log.info("IN DictionaryServiceImpl deleteFieldStructure {}", idField);
-
-        //Session session = SessionFactoryConfig.getCurrentSessionFromConfig();
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Query query = session.createQuery("select v.id from Values v where v.idField = " + idField);
-        List<Long> IdValues = query.list();
-
-        IdValues.stream()
-                    .forEach(x -> valuesRepository.deleteById(x));
-        structureDictionaryRepository.deleteById(idField);
     }
 
     /**
@@ -107,49 +71,30 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     @Transactional
-    public CreateDictRequest getAllStructureById(Long idDictionary) {
-        log.info("IN DictionaryServiceImpl getAllStructureById {}", idDictionary);
+    public DictionaryModel find(Long idDictionary) {
+        log.info("FIND DICTIONARY BY ID {}", idDictionary);
 
-        //Session session = SessionFactoryConfig.getCurrentSessionFromConfig();
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        CreateDictRequest createDictRequest = new CreateDictRequest();
-        Query query = session.createQuery("from Dictionary d where d.id = " + idDictionary);
-        List<Dictionary> dictionaries = query.list();
+        DictionaryModel.DictionaryModelBuilder dictionaryBuilder = dictionaryRepository.findById(idDictionary)
+                .map(this::dictionaryToBuilder)
+                .orElseThrow(() -> new NotFoundException("Dictionary with id " + idDictionary + " not found in database"));
+        structureDictionaryRepository.findAllByIdDictionary(idDictionary)
+                .map(this::fieldToModel)
+                .forEach(dictionaryBuilder::field);
 
-        if (!dictionaries.isEmpty()) {
-            createDictRequest.setCode(dictionaries.get(0).getCode());
-            createDictRequest.setName(dictionaries.get(0).getName());
-
-            query = session.createQuery("select str.name, str.dataType from StructureDictionary str where str.idDictionary = " + idDictionary);
-            createDictRequest.setFieldsStructure(query.list());
-        }
-        return createDictRequest;
+        return dictionaryBuilder.build();
     }
 
-    /**
-     * Update structure of the dictionary
-     *
-     * @param updateDictRequest {@link UpdateDictRequest}
-     */
-    @Override
-    @Transactional
-    public void updateStructure(UpdateDictRequest updateDictRequest) {
-        log.info("IN DictionaryServiceImpl updateStructure {}", updateDictRequest);
-
-        Dictionary dictionary = dictionaryRepository.getById(updateDictRequest.getId());
-        dictionary.setCode(updateDictRequest.getCode());
-        dictionary.setName(updateDictRequest.getName());
-        dictionaryRepository.save(dictionary);
-
-        for (UpdateDictRequest.FieldStructure fieldStructure : updateDictRequest.getFieldsStructure()) {
-            StructureDictionary structureDictionary = structureDictionaryRepository.findById(fieldStructure.getId()).orElse(null);
-            if (structureDictionary == null) {
-                structureDictionary = new StructureDictionary();
-            }
-            structureDictionary.setName(fieldStructure.getName());
-            structureDictionary.setDataType(fieldStructure.getType());
-            structureDictionaryRepository.save(structureDictionary);
-        }
+    private FieldModel fieldToModel(StructureDictionary field) {
+        return FieldModel.builder()
+                .name(field.getName())
+                .type(field.getDataType())
+                .build();
     }
 
+    private DictionaryModel.DictionaryModelBuilder dictionaryToBuilder(Dictionary dictionary) {
+        return DictionaryModel.builder()
+                .id(dictionary.getId())
+                .code(dictionary.getCode())
+                .name(dictionary.getName());
+    }
 }

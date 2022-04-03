@@ -31,7 +31,7 @@ public class Values {
      * Value
      */
     @Basic
-    @Column(name = "value", nullable = false, length = -1)
+    @Column(name = "value", nullable = false)
     private String value;
 
     public Long getId() {
