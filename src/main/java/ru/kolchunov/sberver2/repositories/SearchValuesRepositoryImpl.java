@@ -40,14 +40,12 @@ public class SearchValuesRepositoryImpl implements SearchValuesRepository {
                     "and v" + countJoin + ".value " + conditionSearchToString(searchTerm.getCondition()) + " :p_" + countJoin + "Value");
             countJoin++;
         }
-        System.out.println(queryString);
         Query query = entityManager.createQuery(queryString.toString(), Values.class)
                 .setParameter("dictionaryId", searchDictRequest.getIdDict());
 
         countJoin = 0;
         for (SearchDictRequest.SearchTerm searchTerm : searchDictRequest.getSearchTerms()) {
             query.setParameter("p_" + countJoin + "IdField", fields.get(searchTerm.getName()).getId());
-            //query.setParameter("p_" + countJoin + "Condition", conditionSearchToString(searchTerm.getCondition()));
             query.setParameter("p_" + countJoin + "Value", searchTerm.getValue());
             countJoin++;
         }
