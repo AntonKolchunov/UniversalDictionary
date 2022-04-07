@@ -16,4 +16,7 @@ public class DictionaryModel {
     private String name;
     @Singular
     private List<FieldModel> fields;
+
+    //For javadoc generation
+    public static class DictionaryModelBuilder {}
 }

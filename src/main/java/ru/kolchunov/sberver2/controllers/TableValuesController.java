@@ -7,21 +7,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolchunov.sberver2.exceptions.BadRequestException;
-import ru.kolchunov.sberver2.requests.CreateDictRequest;
 import ru.kolchunov.sberver2.requests.InsertDictRequest;
 import ru.kolchunov.sberver2.requests.SearchDictRequest;
-import ru.kolchunov.sberver2.responses.DictionaryModel;
 import ru.kolchunov.sberver2.responses.FieldValue;
 import ru.kolchunov.sberver2.services.TableValuesService;
 
 import java.util.List;
 
+/**
+ * Controller for values functionality
+ */
 @RestController
 @RequestMapping("/api/v1/tablevalues/")
 public class TableValuesController {
     @Autowired
     private TableValuesService tableValuesService;
 
+    /**
+     * Insert new values int the Table of values
+     *
+     * @param insertDictRequest {@link InsertDictRequest}
+     */
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FieldValue>> saveTableValues(@RequestBody InsertDictRequest insertDictRequest) {
         if (insertDictRequest == null) {
@@ -32,6 +38,11 @@ public class TableValuesController {
                 new HttpHeaders(), HttpStatus.CREATED);
     }
 
+    /**
+     * Search rows by fields
+     *
+     * @param searchDictRequest {@link SearchDictRequest}
+     */
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FieldValue>> searchByFields(@RequestBody SearchDictRequest searchDictRequest) {
 
@@ -41,6 +52,21 @@ public class TableValuesController {
 
         return new ResponseEntity<>(tableValuesService.search(searchDictRequest),
                 new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * Delete row by id
+     *
+     * @param id Id row
+     */
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<FieldValue>> delete(@PathVariable("id") Long id){
+        if (id == null) {
+            throw new BadRequestException("Empty id received");
+        }
+
+        this.tableValuesService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
